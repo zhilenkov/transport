@@ -5,13 +5,12 @@ Created on Sun May 26 08:55:03 2019
 @author: Dmitry
 """
 
-import mercantile
+import osmnx as ox
+import matplotlib.pyplot as plt
+#matplotlib inline
+ox.config(log_console=True, use_cache=True)
+print(ox.__version__)
 
-west = 100.393
-south = 50.986
-east = 111.182
-north = 56.559
-zoom = 5 # для начала нам хватит зума поменьше, чтобы не сильно нагружать osm
-
-tiles = list(mercantile.tiles(west, south, east, north, zoom))
-print(tiles)
+melbourne = ox.gdf_from_place('Vladivostok, Russia')
+melbourne = ox.project_gdf(melbourne)
+fig, ax = ox.plot_shape(melbourne)
