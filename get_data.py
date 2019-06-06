@@ -15,13 +15,13 @@ import osmnx as ox
 import matplotlib.pyplot as plt
 #matplotlib inline
 ox.config(log_console=True, use_cache=True)
-print(ox.__version__)
 
 place_name = 'Vladivostok, Russia'
 
-vdk = ox.graph_from_place(place_name, simplify=True)
+vdk = ox.gdf_from_place(place_name)
 
-print(type(vdk))
+vdk.plot()
+
 #
 #
 
