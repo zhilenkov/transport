@@ -16,11 +16,13 @@ import matplotlib.pyplot as plt
 #matplotlib inline
 ox.config(log_console=True, use_cache=True)
 
-place_name = 'Vladivostok, Russia'
+place_name = 'Khabarovsk, Russia'
 
 vdk = ox.gdf_from_place(place_name)
 
 vdk.plot()
+
+print(vdk.head())
 
 #
 #
