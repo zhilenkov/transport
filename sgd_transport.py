@@ -7,9 +7,7 @@ Created on Sun Jul 14 20:00:46 2019
 
 import numpy as np
 
-def dualf(c, u, v, a, b, t=0.5, prevgrad=0):
-    x = np.concatenate((u, v), axis=0)
-    g = np.concatenate((-a, -b), axis=0)
+def dualf(c, u, v, a, b, t=0.5, prevsg=0):
     matu = np.tile(u, (len(v), 1)).T
     matv = np.tile(v, (len(u), 1))
     r = matu + matv + c
@@ -24,10 +22,13 @@ def dualf(c, u, v, a, b, t=0.5, prevgrad=0):
     idxj = np.random.choice(range(len(j)), p = j/np.sum(j))
     veci[idxi] = i[idxi]
     vecj[idxj] = j[idxj]
-    wsg = np.concatenate((veci, vecj), axis=0)
-    un = u + veci
-    vn = v + vecj
-    return [u, v]
+    wsg = np.concatenate((veci - a, vecj - b), axis=0)
+    g = np.concatenate((-a + i, -b + j), axis=0)
+    un = u + veci - a
+    vn = v + vecj - b
+    xn = np.concatenate((un, vn))
+    mavwsg = t*wsg + (1-t)*prevsg
+    return np.array([un, vn, xn, wsg, g, mavwsg])
 
 c = np.array([[3, 4, 6], [2, 9, 1]])
 a = np.array([30, 50])
