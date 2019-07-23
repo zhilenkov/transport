@@ -24,19 +24,35 @@ def dualf(c, u, v, a, b, t=0.5, prevsg=0):
     vecj[idxj] = j[idxj]
     wsg = np.concatenate((veci - a, vecj - b), axis=0)
     g = np.concatenate((-a + i, -b + j), axis=0)
-    un = u + veci - a
-    vn = v + vecj - b
-    xn = np.concatenate((un, vn))
+    wsgu = veci - a
+    wsgv = vecj - b
     mavwsg = t*wsg + (1-t)*prevsg
-    return np.array([un, vn, xn, wsg, g, mavwsg])
+    return np.array([wsgu, wsgv, wsg, g, mavwsg, (res - np.dot(a, u) - np.dot(b, v))])
 
-c = np.array([[3, 4, 6], [2, 9, 1]])
-a = np.array([30, 50])
-b = np.array([20, 40, 20])
+c = np.array([[3., 4., 6.], [2., 9., 1.]])
+a = np.array([30., 50.])
+b = np.array([20., 40., 20.])
 
-u = np.array([-1, 1])
-v = np.array([1, -10, -10])
+u = np.array([-1., 1.])
+v = np.array([1., -10., -10.])
 
 p = np.sum(a)
 
-print(dualf(c, u, v, a, b, t=0.3))
+# print(dualf(c, u, v, a, b, t=0.3, prevsg=0))
+
+mavwsg = np.concatenate((-a, -b), axis=0)
+a = 1/100
+y = np.array([])
+
+for it in range(200):
+    res = dualf(c, u, v, a, b, t=0.7, prevsg=mavwsg)
+    u += a*res[0]
+    v += a*res[1]
+    wsg = res[2]
+    g = res[3]
+    mavwsg = res[4]
+    obj = res[5]
+    print(obj)
+    np.append(y, obj)
+    
+print(y)
