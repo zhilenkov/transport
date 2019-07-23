@@ -41,18 +41,19 @@ p = np.sum(a)
 # print(dualf(c, u, v, a, b, t=0.3, prevsg=0))
 
 mavwsg = np.concatenate((-a, -b), axis=0)
-a = 1/100
-y = np.array([])
+alph = 1/100
+y = []
 
-for it in range(200):
+for it in range(400):
     res = dualf(c, u, v, a, b, t=0.7, prevsg=mavwsg)
-    u += a*res[0]
-    v += a*res[1]
+    u += alph/(it+1)*res[0]
+    v += alph*res[1]
     wsg = res[2]
     g = res[3]
     mavwsg = res[4]
     obj = res[5]
-    print(obj)
-    np.append(y, obj)
+    y.append(obj)
     
-print(y)
+
+for i in y:
+    print(y)
